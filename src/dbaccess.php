@@ -1,6 +1,6 @@
 <?php
 
-namespace euroglas\eurorest;
+namespace euroglas\dbaccess;
 
 class dbaccess
 {
