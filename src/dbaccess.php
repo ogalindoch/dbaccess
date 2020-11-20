@@ -1,6 +1,7 @@
 <?php
-
 namespace euroglas\dbaccess;
+
+use \PDO;
 
 class dbaccess
 {
@@ -34,7 +35,7 @@ class dbaccess
                         . ':host=' . $this->ini[$connectionName]['server']
                         . ';dbname=' . $schema ;
 
-                $this->currentConnection = new PDO( $dns,
+                $this->currentConnection = new \PDO( $dns,
                                 $this->ini[$connectionName]['username'],
                                 $this->ini[$connectionName]['password']);
                 $this->currentConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
