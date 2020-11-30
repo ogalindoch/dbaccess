@@ -35,6 +35,11 @@ class dbaccess
                         . ':host=' . $this->ini[$connectionName]['server']
                         . ';dbname=' . $schema ;
 
+                if (isset($this->ini[$connectionName]['port']))
+                {
+                    $dns = $dns . ';port=' . $this->ini[$connectionName]['port'];
+                }
+
                 $this->currentConnection = new \PDO( $dns,
                                 $this->ini[$connectionName]['username'],
                                 $this->ini[$connectionName]['password']);
@@ -58,6 +63,11 @@ class dbaccess
     {
         //return $queryName;
         return( array_key_exists($queryName, $this->preparedQueries) );
+    }
+
+    public function rawQueryPrepared($queryName)
+    {
+        return($this->preparedQueries[$queryName]);
     }
 
     public function prepare($queryString,$queryName)
@@ -93,6 +103,55 @@ class dbaccess
         }
 
     }
+
+    public function execute_bind($queryName, $types,  $values=array())
+    {
+        // Carácter Descripción
+        // i    la variable correspondiente es de tipo entero
+        // d    la variable correspondiente es de tipo double
+        // s    la variable correspondiente es de tipo string
+        // b    la variable correspondiente es un blob y se envía en paquetes
+
+        // la lista anterior es para el primer parametro en mysqli_stmt
+        // PDOStatement no usa este formato
+        // traducir solo i y s, float funciona con s
+        // si el tipo no esta tomar s como default
+        // Mysql text blob PDO::PARAM_LOB?
+        
+        $keys = array_keys($values);
+
+        for ($i=0; $i<count($keys); $i++)
+        {
+            $t = PDO::PARAM_STR;
+
+            if (isset($types[$i]))
+            {
+                if ($types[$i] == 'i')
+                    $t = PDO::PARAM_INT;
+                #else if ($types[$i] == 's')
+                #   $t = PDO::PARAM_STR;
+            }
+
+            $this->preparedQueries[$queryName]->bindValue($keys[$i], $values[$keys[$i]], $t);
+        }
+        
+        try
+        {           
+            $this->preparedQueries[$queryName]->execute();
+            return $this->preparedQueries[$queryName];
+        }
+        catch(PDOException $e)
+        {
+            print_r($this->lastError = $e->getMessage());
+            die();
+            $this->lastError = $e->getMessage();
+
+            return false;
+
+            echo 'Error ejecutando query: ',  $e->getMessage(), "\n";
+        }
+    }
+
     public function execute($queryName, $values=array())
     {
         try
