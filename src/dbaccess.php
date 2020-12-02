@@ -40,6 +40,9 @@ class dbaccess
                     $dns = $dns . ';port=' . $this->ini[$connectionName]['port'];
                 }
 
+                // Solicita que los datos sean UTF8, de lo contrario, falla JSON
+                $dns .= ';charset=utf8';
+
                 $this->currentConnection = new \PDO( $dns,
                                 $this->ini[$connectionName]['username'],
                                 $this->ini[$connectionName]['password']);
