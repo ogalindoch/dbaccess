@@ -174,6 +174,7 @@ class dbaccess
             echo 'Error ejecutando query: ',  $e->getMessage(), "\n";
         }
     }
+    
     public function rowCount($queryName)
     {
         return( $this->preparedQueries[$queryName]->rowCount() );
