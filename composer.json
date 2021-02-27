@@ -10,6 +10,9 @@
 			"email": "Octavio@euroglas.net",
 			"role": "Developer"
 	}],
+	"require-dev": {
+		"euroglas/eurorest": "^1.0"
+	},
 	"autoload": {
 		"psr-4": {
 			"euroglas\\dbaccess\\": "src/"
