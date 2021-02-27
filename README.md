@@ -44,7 +44,7 @@ class authkey extends \euroglas\eurorest\auth
 |---|---|
 | ServerName="" | Nombre del servidor | 
 | ModoDebug = 1 | Habilita el modo de desarrollo | 
-| [Modulos] <br> authkey=1 | Habilita el modulo authkey queda registrado como proveedor de Auth
+| [Modulos] | DbAccess no es un modulo, por eso no aparece en la lista de modulos.
 | [dbaccess]<br>config = dbconfig.ini | Configura el archivo con los detalles de conexión a la BD
 
 ### dbconfig.ini
